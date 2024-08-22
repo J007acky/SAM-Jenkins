@@ -37,7 +37,7 @@ pipeline {
                             sh "sam deploy --template-file output1.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
 
                             // Capture the GlobalTableStreamArn output
-                            sh "aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --region ${AWS_REGION} --query 'Stacks[0].Outputs[?OutputKey==`GlobalTableStreamArn`].OutputValue' --output text > globalTableStreamArn.txt"
+                            // sh "aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --region ${AWS_REGION} --query 'Stacks[0].Outputs[?OutputKey==`GlobalTableStreamArn`].OutputValue' --output text > globalTableStreamArn.txt"
                         } catch (Exception e) {
                             sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                         }
@@ -58,7 +58,7 @@ pipeline {
                             sh "sam deploy --template-file output2.yaml --stack-name ${STACK_NAME_2} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
 
                             // Capture the LambdaRoleArn output
-                            sh "aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --region ${AWS_REGION} --query 'Stacks[0].Outputs[?OutputKey==`LambdaRoleArn`].OutputValue' --output text > lambdaRoleArn.txt"
+                            // sh "aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --region ${AWS_REGION} --query 'Stacks[0].Outputs[?OutputKey==`LambdaRoleArn`].OutputValue' --output text > lambdaRoleArn.txt"
                         } catch (Exception e) {
                             sh 'echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing..."'
                         }

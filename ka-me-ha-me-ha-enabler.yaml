@@ -1,33 +1,33 @@
-AWSTemplateFormatVersion: 2010-09-09
-Description: CloudFormation template to create a lambda function
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: SAM Template for Lambda Function and Event Source Mapping Stack
 
 Parameters:
-  LambdaFunctionName:
+  LambdaRoleArn:
     Type: String
-    Default: ka-me-ha-me-ha-enabler
-    Description: Enter the name of the lambda function
+    Description: ARN of the Lambda Execution Role
+  GlobalTableStreamArn:
+    Type: String
+    Description: Stream ARN of the Global Table
 
 Resources:
   MyLambdaEnabler:
-    Type: AWS::Lambda::Function
+    Type: AWS::Serverless::Function
     Properties:
-      Role: 
-        Fn::ImportValue: !Sub MyLambdaRoleArn-s3-Ddb
       Runtime: python3.12
       Handler: app.lambda_handler
-      FunctionName: !Ref LambdaFunctionName
-      Codeuri: Lambda/app.py
-      Description: This is a lambda function for adding a object in s3 bucket.
-  
-
+      FunctionName: ka-me-ha-me-ha-enabler
+      CodeUri: Lambda/
+      Description: This is a lambda function for adding an object in the S3 bucket.
+      Role: !Ref LambdaRoleArn
 
   MyEventSourceMapping:
     Type: AWS::Lambda::EventSourceMapping
+    DependsOn: MyLambdaEnabler
     Properties:
       BatchSize: 100
-      FunctionName: !Ref    MyLambdaEnabler
-      EventSourceArn: 
-        Fn::ImportValue: !Sub MyGlobalTableArn
+      FunctionName: !Ref MyLambdaEnabler
+      EventSourceArn: !Ref GlobalTableStreamArn
       StartingPosition: "LATEST"
 
 Outputs:

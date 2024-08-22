@@ -35,6 +35,9 @@ pipeline {
 
                             // Deploy the SAM template for Stack 1
                             sh "sam deploy --template-file output1.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
+
+                            // Capture the GlobalTableStreamArn output
+                            sh "aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --region ${AWS_REGION} --query 'Stacks[0].Outputs[?OutputKey==`GlobalTableStreamArn`].OutputValue' --output text > globalTableStreamArn.txt"
                         } catch (Exception e) {
                             sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                         }
@@ -53,6 +56,9 @@ pipeline {
 
                             // Deploy the SAM template for Stack 2
                             sh "sam deploy --template-file output2.yaml --stack-name ${STACK_NAME_2} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
+
+                            // Capture the LambdaRoleArn output
+                            sh "aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --region ${AWS_REGION} --query 'Stacks[0].Outputs[?OutputKey==`LambdaRoleArn`].OutputValue' --output text > lambdaRoleArn.txt"
                         } catch (Exception e) {
                             sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                         }
@@ -66,11 +72,16 @@ pipeline {
                 script {
                     withAWS(credentials: 'aws-access', region: "$AWS_REGION") {
                         try {
+                            // Read the captured outputs
+                            def globalTableStreamArn = readFile('globalTableStreamArn.txt').trim()
+                            def lambdaRoleArn = readFile('lambdaRoleArn.txt').trim()
+
+                            
                             // Package the SAM template for Stack 3
                             sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket ${S3_BUCKET} --output-template-file output3.yaml --region ${AWS_REGION}"
 
                             // Deploy the SAM template for Stack 3
-                            sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
+                            sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION}--parameter-overrides GlobalTableStreamArn=${globalTableStreamArn} LambdaRoleArn=${lambdaRoleArn}"
                         } catch (Exception e) {
                             sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                         }

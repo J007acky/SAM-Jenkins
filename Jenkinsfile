@@ -81,7 +81,7 @@ pipeline {
                             sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket ${S3_BUCKET} --output-template-file output3.yaml --region ${AWS_REGION}"
 
                             // Deploy the SAM template for Stack 3
-                            sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION}--parameter-overrides GlobalTableStreamArn=${globalTableStreamArn} LambdaRoleArn=${lambdaRoleArn}"
+                            sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION} --parameter-overrides ParameterKey=GlobalTableStreamArn,ParameterValue=${GLOBAL_TABLE_STREAM_ARN} ParameterKey=LambdaRoleArn,ParameterValue=${LAMBDA_ROLE_ARN}"
                         } catch (Exception e) {
                             sh 'echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."'
                             throw e

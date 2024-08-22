@@ -29,10 +29,10 @@ pipeline {
             steps {
                 script {
                     // Validate the SAM template for Stack 1
-                    sh 'sam validate --template-file stack1.yaml --region ${AWS_REGION}'
+                    sh 'sam validate --template-file DynamoDBStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 1
-                    sh "sam package --template-file stack1.yaml --s3-bucket ${S3_BUCKET} --output-template-file packaged-stack1.yaml --region ${AWS_REGION}"
+                    sh "sam package --template-file DynamoDBStack.yaml --s3-bucket ${S3_BUCKET} --output-template-file packaged-stack1.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 1
                     sh "sam deploy --template-file packaged-stack1.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
@@ -47,10 +47,10 @@ pipeline {
             steps {
                 script {
                     // Validate the SAM template for Stack 2
-                    sh 'sam validate --template-file stack2.yaml --region ${AWS_REGION}'
+                    sh 'sam validate --template-file IAMroleStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 2
-                    sh "sam package --template-file stack2.yaml --s3-bucket ${S3_BUCKET} --output-template-file packaged-stack2.yaml --region ${AWS_REGION}"
+                    sh "sam package --template-file IAMroleStack.yaml --s3-bucket ${S3_BUCKET} --output-template-file packaged-stack2.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 2
                     sh "sam deploy --template-file packaged-stack2.yaml --stack-name ${STACK_NAME_2} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
@@ -69,10 +69,10 @@ pipeline {
                     def lambdaRoleArn = sh(script: "jq -r '.[] | select(.OutputKey==\"LambdaRoleArn\") | .OutputValue' stack2-outputs.json", returnStdout: true).trim()
 
                     // Validate the SAM template for Stack 3
-                    sh 'sam validate --template-file stack3.yaml --region ${AWS_REGION}'
+                    sh 'sam validate --template-file LambdaStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 3
-                    sh "sam package --template-file stack3.yaml --s3-bucket ${S3_BUCKET} --output-template-file packaged-stack3.yaml --region ${AWS_REGION}"
+                    sh "sam package --template-file LambdaStack.yaml --s3-bucket ${S3_BUCKET} --output-template-file packaged-stack3.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 3
                     sh """

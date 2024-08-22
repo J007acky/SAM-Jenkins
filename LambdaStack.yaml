@@ -17,7 +17,7 @@ Resources:
       Runtime: python3.12
       Handler: app.lambda_handler
       FunctionName: ka-me-ha-me-ha-enabler
-      CodeUri: /
+      CodeUri: Lambda/
       Description: This is a lambda function for adding an object in the S3 bucket.
       Role: !Ref LambdaRoleArn
 

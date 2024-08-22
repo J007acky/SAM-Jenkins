@@ -60,7 +60,7 @@ pipeline {
                             // Capture the LambdaRoleArn output
                             sh "aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --region ${AWS_REGION} --query 'Stacks[0].Outputs[?OutputKey==`LambdaRoleArn`].OutputValue' --output text > lambdaRoleArn.txt"
                         } catch (Exception e) {
-                            sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
+                            sh 'echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing..."'
                         }
                     }
                 }
@@ -83,7 +83,7 @@ pipeline {
                             // Deploy the SAM template for Stack 3
                             sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION}--parameter-overrides GlobalTableStreamArn=${globalTableStreamArn} LambdaRoleArn=${lambdaRoleArn}"
                         } catch (Exception e) {
-                            sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
+                            sh 'echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."'
                         }
                     }
                 }

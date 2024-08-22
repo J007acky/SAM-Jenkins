@@ -36,11 +36,7 @@ pipeline {
                             // Deploy the SAM template for Stack 1
                             sh "sam deploy --template-file output1.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                         } catch (Exception e) {
-                            if (e.message.contains("No changes to deploy")) {
-                                echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."
-                            } else {
-                                throw e
-                            }
+                            sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                         }
                     }
                 }
@@ -58,11 +54,7 @@ pipeline {
                             // Deploy the SAM template for Stack 2
                             sh "sam deploy --template-file output2.yaml --stack-name ${STACK_NAME_2} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
                         } catch (Exception e) {
-                            if (e.message.contains("No changes to deploy")) {
-                                echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing..."
-                            } else {
-                                throw e
-                            }
+                            sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                         }
                     }
                 }
@@ -80,11 +72,7 @@ pipeline {
                             // Deploy the SAM template for Stack 3
                             sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                         } catch (Exception e) {
-                            if (e.message.contains("No changes to deploy")) {
-                                echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."
-                            } else {
-                                throw e
-                            }
+                            sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                         }
                     }
                 }

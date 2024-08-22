@@ -73,7 +73,9 @@ pipeline {
                     withAWS(credentials: 'aws-access', region: "$AWS_REGION") {
                         try {
                             // Read the captured outputs
-                            sh "export GLOBAL_TABLE_STREAM_ARN=`aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --query "Stacks[1].Outputs[?starts_with(OutputKey, 'GlobalTableStreamArn')].OutputValue" --output text`"
+                            export GLOBAL_TABLE_STREAM_ARN=`aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --query "Stacks[1].Outputs[?starts_with(OutputKey, 'GlobalTableStreamArn')].OutputValue" --output text`
+
+                            export LAMBDA_ROLE_ARN=`aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --query "Stacks[0].Outputs[?starts_with(OutputKey, 'RoleArn')].OutputValue" --output text`
 
                             
                             // Package the SAM template for Stack 3

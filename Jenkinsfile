@@ -28,6 +28,7 @@ pipeline {
         stage('Deploy Stack 1: DynamoDB Global Table') {
             steps {
                 script {
+                    withAWS(credentials: 'aws-access', region: "$AWS_REGION") {
                     // Validate the SAM template for Stack 1
                     // sh 'sam validate --template-file DynamoDBStack.yaml --region ${AWS_REGION}'
 
@@ -40,12 +41,14 @@ pipeline {
                     // Capture the outputs needed for subsequent stacks
                    // sh 'aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --region ${AWS_REGION} --query "Stacks[0].Outputs" > stack1-outputs.json'
                 }
+                }
             }
         }
 
         stage('Deploy Stack 2: IAM Role') {
             steps {
                 script {
+                    withAWS(credentials: 'aws-access', region: "$AWS_REGION") {
                     // Validate the SAM template for Stack 2
                     // sh 'sam validate --template-file IAMroleStack.yaml --region ${AWS_REGION}'
 
@@ -58,12 +61,14 @@ pipeline {
                     // Capture the outputs needed for subsequent stacks
                     // sh 'aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --region ${AWS_REGION} --query "Stacks[0].Outputs" > stack2-outputs.json'
                 }
+                }
             }
         }
 
         stage('Deploy Stack 3: Lambda and Event Source Mapping') {
             steps {
                 script {
+                    withAWS(credentials: 'aws-access', region: "$AWS_REGION") {
                     // Extract necessary ARNs from previous stack outputs
                     // def globalTableStreamArn = sh(script: "jq -r '.[] | select(.OutputKey==\"GlobalTableStreamArn\") | .OutputValue' stack1-outputs.json", returnStdout: true).trim()
                     // def lambdaRoleArn = sh(script: "jq -r '.[] | select(.OutputKey==\"LambdaRoleArn\") | .OutputValue' stack2-outputs.json", returnStdout: true).trim()
@@ -77,6 +82,7 @@ pipeline {
                     // Deploy the SAM template for Stack 3
                     sh "sam deploy --template-file output3.yaml --stack-name LambdaStack --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                 }
+            }
             }
         }
 

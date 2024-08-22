@@ -73,16 +73,16 @@ pipeline {
                     withAWS(credentials: 'aws-access', region: "$AWS_REGION") {
                         try {
                             // Read the captured outputs
-                            sh "export GLOBAL_TABLE_STREAM_ARN=`aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --query "Stacks[1].Outputs[?starts_with(OutputKey, 'GlobalTableStreamArn')].OutputValue" --output text`"
+                            // export GLOBAL_TABLE_STREAM_ARN=`aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --query "Stacks[1].Outputs[?starts_with(OutputKey, 'GlobalTableStreamArn')].OutputValue" --output text`
 
-                            sh "export LAMBDA_ROLE_ARN=`aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --query "Stacks[0].Outputs[?starts_with(OutputKey, 'RoleArn')].OutputValue" --output text`"
+                            // export LAMBDA_ROLE_ARN=`aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --query "Stacks[0].Outputs[?starts_with(OutputKey, 'RoleArn')].OutputValue" --output text`
 
                             
                             // Package the SAM template for Stack 3
                             sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket ${S3_BUCKET} --output-template-file output3.yaml --region ${AWS_REGION}"
 
                             // Deploy the SAM template for Stack 3
-                            sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION} --parameter-overrides ParameterKey=GlobalTableStreamArn,ParameterValue=${GLOBAL_TABLE_STREAM_ARN} ParameterKey=LambdaRoleArn,ParameterValue=${LAMBDA_ROLE_ARN}"
+                            sh "sam deploy --template-file output3.yaml --stack-name ${STACK_NAME_3} --capabilities CAPABILITY_IAM --region ${AWS_REGION} --parameter-overrides ParameterKey=GlobalTableStreamArn,ParameterValue=arn:aws:dynamodb:ap-south-1:010438467788:table/ka-me-ha-me-ha-archives/stream/2024-08-22T05:22:48.879 ParameterKey=LambdaRoleArn,ParameterValue=arn:aws:iam::010438467788:role/MyLambdaExecutionRole"
                         } catch (Exception e) {
                             sh 'echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."'
                             throw e

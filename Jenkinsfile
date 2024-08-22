@@ -4,9 +4,9 @@ pipeline {
     environment {
         AWS_REGION = 'ap-south-1' // Set your default AWS region
         S3_BUCKET = 'rahul-bucket-v2' // S3 bucket to store packaged templates
-        STACK_NAME_1 = 'DynamoDBGlobalTableStack' // CloudFormation stack name for DynamoDB
-        STACK_NAME_2 = 'IAMRoleStack' // CloudFormation stack name for IAM Role
-        STACK_NAME_3 = 'LambdaAndEventMappingStack' // CloudFormation stack name for Lambda and Event Source Mapping
+        STACK_NAME_1 = 'DBstack' // CloudFormation stack name for DynamoDB
+        STACK_NAME_2 = 'Role' // CloudFormation stack name for IAM Role
+        STACK_NAME_3 = 'LambdaStack' // CloudFormation stack name for Lambda and Event Source Mapping
     }
 
     stages {

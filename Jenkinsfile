@@ -35,7 +35,7 @@ pipeline {
                     sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket rahul-bucket-v2 --output-template-file output1.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 1
-                    sh "deploy --template-file output1.yaml --stack-name DBstack --capabilities CAPABILITY_IAM"
+                    sh "sam deploy --template-file output1.yaml --stack-name DBstack --capabilities CAPABILITY_IAM"
 
                     // Capture the outputs needed for subsequent stacks
                    // sh 'aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --region ${AWS_REGION} --query "Stacks[0].Outputs" > stack1-outputs.json'
@@ -53,7 +53,7 @@ pipeline {
                     sh "sam package --template-file lambda-role.yaml --s3-bucket rahul-bucket-v2 --output-template-file output2.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 2
-                    sh "deploy --template-file output2.yaml --stack-name Role --capabilities CAPABILITY_IAM"
+                    sh "sam deploy --template-file output2.yaml --stack-name Role --capabilities CAPABILITY_IAM"
 
                     // Capture the outputs needed for subsequent stacks
                     // sh 'aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --region ${AWS_REGION} --query "Stacks[0].Outputs" > stack2-outputs.json'
@@ -75,7 +75,7 @@ pipeline {
                     sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket rahul-bucket-v2 --output-template-file output3.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 3
-                    sh "deploy --template-file output3.yaml --stack-name LambdaStack --capabilities CAPABILITY_IAM"
+                    sh "sam deploy --template-file output3.yaml --stack-name LambdaStack --capabilities CAPABILITY_IAM"
                 }
             }
         }

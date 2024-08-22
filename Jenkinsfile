@@ -56,7 +56,7 @@ pipeline {
                     sh "sam package --template-file lambda-role.yaml --s3-bucket rahul-bucket-v2 --output-template-file output2.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 2
-                    sh "sam deploy --template-file output2.yaml --stack-name Role --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
+                    sh "sam deploy --template-file output2.yaml --stack-name Role --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
 
                     // Capture the outputs needed for subsequent stacks
                     // sh 'aws cloudformation describe-stacks --stack-name ${STACK_NAME_2} --region ${AWS_REGION} --query "Stacks[0].Outputs" > stack2-outputs.json'

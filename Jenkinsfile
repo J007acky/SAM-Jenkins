@@ -65,14 +65,14 @@ pipeline {
             steps {
                 script {
                     // Extract necessary ARNs from previous stack outputs
-                    def globalTableStreamArn = sh(script: "jq -r '.[] | select(.OutputKey==\"GlobalTableStreamArn\") | .OutputValue' stack1-outputs.json", returnStdout: true).trim()
-                    def lambdaRoleArn = sh(script: "jq -r '.[] | select(.OutputKey==\"LambdaRoleArn\") | .OutputValue' stack2-outputs.json", returnStdout: true).trim()
+                    // def globalTableStreamArn = sh(script: "jq -r '.[] | select(.OutputKey==\"GlobalTableStreamArn\") | .OutputValue' stack1-outputs.json", returnStdout: true).trim()
+                    // def lambdaRoleArn = sh(script: "jq -r '.[] | select(.OutputKey==\"LambdaRoleArn\") | .OutputValue' stack2-outputs.json", returnStdout: true).trim()
 
                     // Validate the SAM template for Stack 3
                     // sh 'sam validate --template-file LambdaStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 3
-                    sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket rahul-bucket-v2 --output-template-file output3.yaml --region ${AWS_REGION}"
+                    sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket rahul-bucket-v2 --output-template-file output3.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 3
                     sh "deploy --template-file output3.yaml --stack-name LambdaStack --capabilities CAPABILITY_IAM"

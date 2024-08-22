@@ -32,7 +32,7 @@ pipeline {
                     // sh 'sam validate --template-file DynamoDBStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 1
-                    sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket rahul-bucket-v2 --output-template-file output1.yaml"
+                    sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket rahul-bucket-v2 --output-template-file output1.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 1
                     sh "deploy --template-file output1.yaml --stack-name DBstack --capabilities CAPABILITY_IAM"
@@ -50,7 +50,7 @@ pipeline {
                     // sh 'sam validate --template-file IAMroleStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 2
-                    sh "sam package --template-file lambda-role.yaml --s3-bucket rahul-bucket-v2 --output-template-file output2.yaml"
+                    sh "sam package --template-file lambda-role.yaml --s3-bucket rahul-bucket-v2 --output-template-file output2.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 2
                     sh "deploy --template-file output2.yaml --stack-name Role --capabilities CAPABILITY_IAM"
@@ -72,7 +72,7 @@ pipeline {
                     // sh 'sam validate --template-file LambdaStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 3
-                    sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket rahul-bucket-v2 --output-template-file output3.yaml"
+                    sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket rahul-bucket-v2 --output-template-file output3.yaml --region ${AWS_REGION}"
 
                     // Deploy the SAM template for Stack 3
                     sh "deploy --template-file output3.yaml --stack-name LambdaStack --capabilities CAPABILITY_IAM"

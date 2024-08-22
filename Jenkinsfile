@@ -32,10 +32,10 @@ pipeline {
                     // sh 'sam validate --template-file DynamoDBStack.yaml --region ${AWS_REGION}'
 
                     // Package the SAM template for Stack 1
-                    sh "sam package --template-file DynamoDBStack.yaml --s3-bucket ${S3_BUCKET} --output-template-file packaged-stack1.yaml --region ${AWS_REGION}"
+                    sh "sam package --template-file DynamoDBStack.yaml --s3-bucket ${S3_BUCKET} --output-template-file stack1.yaml"
 
                     // Deploy the SAM template for Stack 1
-                    sh "sam deploy --template-file packaged-stack1.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
+                    sh "sam deploy --template-file packaged-stack1.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM"
 
                     // Capture the outputs needed for subsequent stacks
                     sh 'aws cloudformation describe-stacks --stack-name ${STACK_NAME_1} --region ${AWS_REGION} --query "Stacks[0].Outputs" > stack1-outputs.json'

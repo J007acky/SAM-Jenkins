@@ -19,7 +19,7 @@ Resources:
     Properties:
       BatchSize: 100
       FunctionName: !Ref MyLambdaEnabler
-      EventSourceArn: !ImportValue GlobalTableStreamArn
+      EventSourceArn: !ImportValue MyGlobalTableArn
       StartingPosition: "LATEST"
 
 Outputs:

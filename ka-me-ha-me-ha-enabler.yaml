@@ -2,14 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: SAM Template for Lambda Function and Event Source Mapping Stack
 
-Parameters:
-  LambdaRoleArn:
-    Type: String
-    Description: ARN of the Lambda Execution Role
-  GlobalTableStreamArn:
-    Type: String
-    Description: Stream ARN of the Global Table
-
 Resources:
   MyLambdaEnabler:
     Type: AWS::Serverless::Function
@@ -19,15 +11,15 @@ Resources:
       FunctionName: ka-me-ha-me-ha-enabler
       CodeUri: Lambda/
       Description: This is a lambda function for adding an object in the S3 bucket.
-      Role: !Ref LambdaRoleArn
+      Role: !ImportValue LambdaRoleArn
 
   MyEventSourceMapping:
-    Type: AWS::Lambda::EventSourceMapping
+    Type: AWS::Serverless::EventSource
     DependsOn: MyLambdaEnabler
     Properties:
       BatchSize: 100
       FunctionName: !Ref MyLambdaEnabler
-      EventSourceArn: !Ref GlobalTableStreamArn
+      EventSourceArn: !ImportValue MyGlobalTableArn
       StartingPosition: "LATEST"
 
 Outputs:

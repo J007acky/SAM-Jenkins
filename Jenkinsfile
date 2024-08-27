@@ -14,15 +14,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Verify AWS/SAM CLI'){
-            steps{
-                script{
-                    sh "python3 -m venv ${VENV_PATH}"
-                    sh ". ${VENV_PATH}/bin/activate"
-                    sh 'if ! command -v sam &> /dev/null; then pip install aws-sam-cli; fi'
-                }
-            }
-        }
         stage('Deploying DynamoDB Stack'){
             steps{
                 script{

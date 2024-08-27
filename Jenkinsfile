@@ -27,7 +27,7 @@ pipeline {
                         // Deploying the Packaged templates
                         sh "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
-                    catch {
+                    catch (Exception e){
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
                     }
                 
@@ -43,7 +43,7 @@ pipeline {
                         // Deploying the Packaged templates
                         sh "sam deploy --template-file Roles.yaml --stack-name ${STACK_NAME_2} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
                     }
-                    catch {
+                    catch (Exception e){
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing..."'
                     }
                 
@@ -59,7 +59,7 @@ pipeline {
                         // Deploying the Packaged templates
                         sh "sam deploy --template-file Lambda.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
-                    catch {
+                    catch (Exception e){
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."'
                     }
                 

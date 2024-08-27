@@ -18,7 +18,7 @@ pipeline {
             steps{
                 script{
                     sh "python3 -m venv ${VENV_PATH}"
-                    sh "source ${VENV_PATH}/bin/activate"
+                    sh ". ${VENV_PATH}/bin/activate"
                     sh 'if ! command -v sam &> /dev/null; then pip install aws-sam-cli; fi'
                 }
             }

@@ -15,12 +15,15 @@ pipeline {
         }
         stage('Verify AWS/SAM CLI'){
             steps{
-                sh 'if ! command -v sam &> /dev/null; then pip install aws-sam-cli; fi'
+                script{
+                    sh 'if ! command -v sam &> /dev/null; then pip install aws-sam-cli; fi'
+                }
             }
         }
         stage('Deploying DynamoDB Stack'){
             steps{
-                withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
+                script{
+                    withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
                     try {
                         // Packaging SAM templates
                         sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket ${S3_BUCKET} --output-template-file DynamoStack.yaml --region ${AWS_REGION}"
@@ -33,10 +36,12 @@ pipeline {
                 
                 }
                 }
+                }
             }
         stage('Deploying Lambda Role Stack'){
             steps{
-                withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
+                script{
+                     withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
                     try {
                         // Packaging SAM templates
                         sh "sam package --template-file lambda-role.yaml --s3-bucket ${S3_BUCKET} --output-template-file Roles.yaml --region ${AWS_REGION}"
@@ -49,10 +54,12 @@ pipeline {
                 
                 }
                 }
+                }
             }
         stage('Deploying Lambda Stack'){
             steps{
-                withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
+                script{
+                    withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
                     try {
                         // Packaging SAM templates
                         sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket ${S3_BUCKET} --output-template-file Lambda.yaml --region ${AWS_REGION}"
@@ -63,6 +70,7 @@ pipeline {
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."'
                     }
                 
+                }
                 }
                 }
             }

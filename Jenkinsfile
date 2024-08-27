@@ -31,7 +31,7 @@ pipeline {
                         sh "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
-                        sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing..."'
+                        sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing... ${e}"'
                     }
                 
                 }

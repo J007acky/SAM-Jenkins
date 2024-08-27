@@ -28,7 +28,7 @@ pipeline {
                         // Packaging SAM templates
                         sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket ${S3_BUCKET} --output-template-file DynamoStack.yaml --region ${AWS_REGION}"
                         // Deploying the Packaged templates
-                        sh "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
+                        sh "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_DB} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing... ${e}"'
@@ -46,7 +46,7 @@ pipeline {
                         // Packaging SAM templates
                         sh "sam package --template-file lambda-role.yaml --s3-bucket ${S3_BUCKET} --output-template-file Roles.yaml --region ${AWS_REGION}"
                         // Deploying the Packaged templates
-                        sh "sam deploy --template-file Roles.yaml --stack-name ${STACK_NAME_2} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
+                        sh "sam deploy --template-file Roles.yaml --stack-name ${STACK_LAMBDA} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing..."'

@@ -6,6 +6,7 @@ pipeline {
         STACK_DB = 'DynamoDBStack'
         STACK_LAMBDA = 'LambdaStack'
         STACK_ROLE = 'RoleStack'
+        VENV_PATH = '.venv' 
     }
     stages{
         stage('Checkout'){

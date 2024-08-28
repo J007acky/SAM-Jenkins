@@ -61,6 +61,7 @@ pipeline {
                         sh "sam deploy --template-file Lambda.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
+                        throw e
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."'
                     }
                 

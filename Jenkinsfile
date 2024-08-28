@@ -40,7 +40,7 @@ pipeline {
                         // Packaging SAM templates
                         sh "sam package --template-file lambda-role.yaml --s3-bucket ${S3_BUCKET} --output-template-file Roles.yaml --region ${AWS_REGION}"
                         // Deploying the Packaged templates
-                        sh "sam deploy --template-file Roles.yaml --stack-name ${STACK_LAMBDA} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
+                        sh "sam deploy --template-file Roles.yaml --stack-name ${STACK_ROLE} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing..."'
@@ -58,7 +58,7 @@ pipeline {
                         // Packaging SAM templates
                         sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket ${S3_BUCKET} --output-template-file Lambda.yaml --region ${AWS_REGION}"
                         // Deploying the Packaged templates
-                        sh "sam deploy --template-file Lambda.yaml --stack-name ${STACK_NAME_1} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
+                        sh "sam deploy --template-file Lambda.yaml --stack-name ${STACK_LAMBDA} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
                         throw e

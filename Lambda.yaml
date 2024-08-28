@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
+Transform: AWS::Serverless-2016-10-31
 Description: SAM Template for Lambda Function and Event Source Mapping Stack
-
 Resources:
   MyLambdaEnabler:
     Type: AWS::Serverless::Function
@@ -9,20 +8,28 @@ Resources:
       Runtime: python3.12
       Handler: app.lambda_handler
       FunctionName: ka-me-ha-me-ha-enabler
-      CodeUri: Lambda/
+      CodeUri: s3://rahul-bucket-v2/ecbff6a54cc48b9c78b51b780e459979
       Description: This is a lambda function for adding an object in the S3 bucket.
-      Role: !ImportValue MyLambdaRoleArn-s3-Ddb
-
+      Role:
+        Fn::ImportValue: MyLambdaRoleArn-s3-Ddb
+    Metadata:
+      SamResourceId: MyLambdaEnabler
   MyEventSourceMapping:
     Type: AWS::Lambda::EventSourceMapping
     DependsOn: MyLambdaEnabler
     Properties:
       BatchSize: 100
-      FunctionName: !Ref MyLambdaEnabler
-      EventSourceArn: !ImportValue MyGlobalTableArn
-      StartingPosition: "LATEST"
-
+      FunctionName:
+        Ref: MyLambdaEnabler
+      EventSourceArn:
+        Fn::ImportValue: MyGlobalTableArn
+      StartingPosition: LATEST
+    Metadata:
+      SamResourceId: MyEventSourceMapping
 Outputs:
   LambdaFunctionArn:
-    Description: "ARN of the Lambda function"
-    Value: !GetAtt MyLambdaEnabler.Arn
+    Description: ARN of the Lambda function
+    Value:
+      Fn::GetAtt:
+      - MyLambdaEnabler
+      - Arn

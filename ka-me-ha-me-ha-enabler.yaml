@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: SAM Template for Lambda Function and Event Source Mapping Stack
 Resources:
-  MyFunction:
+  MyLambdaEnabler:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: python3.12
@@ -22,4 +22,4 @@ Resources:
 Outputs:
   LambdaFunctionArn:
     Description: "ARN of the Lambda function"
-    Value: !GetAtt MyFunction.Arn
+    Value: !GetAtt MyLambdaEnabler.Arn

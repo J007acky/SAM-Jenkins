@@ -5,22 +5,20 @@ Description: SAM Template for Lambda Function and Event Source Mapping Stack
 Resources:
   MyLambdaEnabler:
     Type: AWS::Serverless::Function
-    Properties:
-      Runtime: python3.12
-      Handler: app.lambda_handler
-      FunctionName: ka-me-ha-me-ha-enabler
-      CodeUri: Lambda/
-      Description: This is a lambda function for adding an object in the S3 bucket.
-      Role: !ImportValue LambdaRoleArn
-
-  MyEventSourceMapping:
-    Type: AWS::Serverless::EventSource
-    DependsOn: MyLambdaEnabler
-    Properties:
-      BatchSize: 100
-      FunctionName: !Ref MyLambdaEnabler
-      EventSourceArn: !ImportValue MyGlobalTableArn
-      StartingPosition: "LATEST"
+  Properties:
+    Runtime: python3.12
+    Handler: app.lambda_handler
+    FunctionName: ka-me-ha-me-ha-enabler
+    CodeUri: Lambda/
+    Description: This is a lambda function for adding an object in the S3 bucket.
+    Role: !ImportValue LambdaRoleArn
+    Events:
+      MyEventSourceMapping:
+        Type: DynamoDB
+        Properties:
+          BatchSize: 100
+          Stream: !ImportValue MyGlobalTableArn
+          StartingPosition: LATEST
 
 Outputs:
   LambdaFunctionArn:

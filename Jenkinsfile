@@ -15,16 +15,6 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('Install SAM CLI') {
-            steps {
-                script {
-                    // Install AWS SAM CLI if not installed
-                    sh 'if ! command -v sam &> /dev/null; then pip install aws-sam-cli; fi'
-                }
-            }
-        }
-
         stage('Deploy Stack 1: DynamoDB Global Table') {
             steps {
                 script {

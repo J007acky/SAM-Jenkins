@@ -62,4 +62,4 @@ Outputs:
     Description: Arn of the role
     Value: !GetAtt MyLambdaRole.Arn
     Export: 
-      Name: MyLambdaRoleArn-s3-Ddb
+      Name: LambdaRoleArn

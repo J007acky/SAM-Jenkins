@@ -34,6 +34,9 @@ if (deployStatus == 0) {
     } else {
         echo "Deployment completed successfully."
     }
+} else {
+    error "Deployment failed with exit code: ${deployStatus}. Output: ${deployOutput}"
+}
                 
                 }
                 }

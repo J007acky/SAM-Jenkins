@@ -57,7 +57,7 @@ pipeline {
                         // Packaging SAM templates
                         sh "sam package --template-file ka-me-ha-me-ha-enabler.yaml --s3-bucket ${S3_BUCKET} --output-template-file Lambda.yaml --region ${AWS_REGION}"
                         // Deploying the Packaged templates
-                        sh "sam deploy --template-file Lambda.yaml --stack-name ${STACK_LAMBDA} --capabilities CAPABILITY_IAM --region ${AWS_REGION}  --s3-bucket cf-templates-krsqrhfzmyd4-ap-south-1"
+                        sh "sam deploy --template-file Lambda.yaml --stack-name ${STACK_LAMBDA} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
                         sh 'echo "No changes to deploy for stack ${STACK_NAME_3}. Continuing..."'

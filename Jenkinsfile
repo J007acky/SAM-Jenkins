@@ -19,20 +19,21 @@ pipeline {
                     withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
                         // Packaging SAM templates
                         sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket ${S3_BUCKET} --output-template-file DynamoStack.yaml --region ${AWS_REGION}"
-                       def deployOutput = sh(
-                        script: "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_DB} --capabilities CAPABILITY_IAM --region ${AWS_REGION}",
-                        returnStatus: true)
-                    if (deployOutput == 0) {
-                        echo "Deployment completed successfully."
-                    } else if (deployOutput.contains("No changes to deploy")) {
-                        echo "No changes to deploy for stack ${STACK_DB}. Continuing..."
-                    } else {
-                        error "Deployment failed with error: ${deployOutput}"
-                    }
-                
-                }
-                }
-                }
+                       def deployOutput = ""
+def deployStatus = sh(
+    script: "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_DB} --capabilities CAPABILITY_IAM --region ${AWS_REGION}",
+    returnStdout: true,
+    returnStatus: true
+).trim()
+
+// If deployment status is 0, check if output contains "No changes to deploy"
+if (deployStatus == 0) {
+    deployOutput = deployOutput.toLowerCase()
+    if (deployOutput.contains("no changes to deploy")) {
+        echo "No changes to deploy for stack ${STACK_DB}. Continuing..."
+    } else {
+        echo "Deployment completed successfully."
+    }
             }
         stage('Deploying Lambda Role Stack'){
             steps{

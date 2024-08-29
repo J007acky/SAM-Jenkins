@@ -24,8 +24,15 @@ pipeline {
                         sh "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_DB} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
-                        throw e
-                        sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing... ${e}"'
+                        def errorMessage = e.getMessage()
+                        if (errorMessage.contains("No changes to deploy. Stack DynamoDBStack is up to date")) {
+                            sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing... ${errorMessage}"'
+                        } 
+                        else {
+                            // If the exception is different, rethrow it
+                            throw e
+                        }
+                        
                     }
                 
                 }

@@ -17,22 +17,17 @@ pipeline {
             steps{
                 script{
                     withAWS(credentials: 'aws-access', region: "$AWS_REGION"){
-                    try {
                         // Packaging SAM templates
                         sh "sam package --template-file ka-me-ha-me-ha-archives.yaml --s3-bucket ${S3_BUCKET} --output-template-file DynamoStack.yaml --region ${AWS_REGION}"
-                        // Deploying the Packaged templates
-                        sh "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_DB} --capabilities CAPABILITY_IAM --region ${AWS_REGION}"
-                    }
-                    catch (Exception e){
-                        def errorMessage = e.getMessage()
-                        if (errorMessage.contains("No changes to deploy. Stack DynamoDBStack is up to date")) {
-                            sh 'echo "No changes to deploy for stack ${STACK_NAME_1}. Continuing... ${errorMessage}"'
-                        } 
-                        else {
-                            // If the exception is different, rethrow it
-                            throw e
-                        }
-                        
+                       def deployOutput = sh(
+                        script: "sam deploy --template-file DynamoStack.yaml --stack-name ${STACK_DB} --capabilities CAPABILITY_IAM --region ${AWS_REGION}",
+                        returnStatus: true)
+                    if (deployOutput == 0) {
+                        echo "Deployment completed successfully."
+                    } else if (deployOutput.contains("No changes to deploy")) {
+                        echo "No changes to deploy for stack ${STACK_DB}. Continuing..."
+                    } else {
+                        error "Deployment failed with error: ${deployOutput}"
                     }
                 
                 }

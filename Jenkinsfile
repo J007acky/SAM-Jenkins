@@ -34,6 +34,10 @@ if (deployStatus == 0) {
     } else {
         echo "Deployment completed successfully."
     }
+                
+                }
+                }
+                }
             }
         stage('Deploying Lambda Role Stack'){
             steps{

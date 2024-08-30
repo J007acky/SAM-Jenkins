@@ -42,7 +42,7 @@ pipeline {
                         sh "sam deploy --template-file Roles.yaml --stack-name ${STACK_ROLE} --capabilities CAPABILITY_NAMED_IAM --region ${AWS_REGION}"
                     }
                     catch (Exception e){
-                        sh 'echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing..."'
+                        sh 'echo "No changes to deploy for stack ${STACK_NAME_2}. Continuing...."'
                     }
                 
                 }

@@ -4,7 +4,7 @@ import botocore
 
 s3 = boto3.client('s3')
 
-bucket_name = 'ka-me-ha-me-ha'
+bucket_name = 'ka-me-ha-me-ha-task69'
 file_name = 'teenage-mutant-ninja-turtles.json'
 
 file_content_format = {
